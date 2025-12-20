@@ -7,9 +7,6 @@ pipeline {
     APP_SERVER_IP = '65.2.131.223'
     SSH_USER = 'ubuntu'
     CONTAINER_NAME = 'hello-world'
-    BUILD_TAG = "${BUILD_NUMBER}"          // Jenkins build number
-    IMAGE_LATEST = "${DOCKER_IMAGE}:latest"
-    IMAGE_BUILD = "${DOCKER_IMAGE}:${BUILD_TAG}"
   }
 
   stages {
@@ -21,19 +18,16 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh """
-          docker build --no-cache -t $IMAGE_LATEST -t $IMAGE_BUILD .
-        """
+        sh 'docker build -t $DOCKER_IMAGE .'
       }
     }
-
+    
     stage('Push to Docker Hub') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh """
             echo $PASSWORD | docker login -u $USERNAME --password-stdin
-            docker push $IMAGE_LATEST
-            docker push $IMAGE_BUILD
+            docker push $DOCKER_IMAGE
           """
         }
       }
@@ -44,9 +38,9 @@ pipeline {
         sshagent(['ec2-ssh-key']) {
           sh """
             ssh -o StrictHostKeyChecking=no $SSH_USER@$APP_SERVER_IP "
-              docker pull $IMAGE_BUILD && \
+              docker pull $DOCKER_IMAGE && \
               docker rm -f $CONTAINER_NAME || true && \
-              docker run -d --name $CONTAINER_NAME --publish 4000:4000 $IMAGE_BUILD
+              docker run -d --name $CONTAINER_NAME --publish 4000:4000 $DOCKER_IMAGE
             "
           """
         }
