@@ -22,7 +22,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         sh """
-          docker build -t $IMAGE_LATEST -t $IMAGE_BUILD .
+          docker build --no-cache -t $IMAGE_LATEST -t $IMAGE_BUILD .
         """
       }
     }
