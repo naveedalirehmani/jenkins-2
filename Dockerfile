@@ -25,7 +25,7 @@
     COPY --from=builder /app/dist ./dist
     
     # Expose port (match your server)
-    EXPOSE 4000
+    EXPOSE 3000
     
     # Start app
     CMD ["node", "dist/server.js"]
