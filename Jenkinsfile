@@ -12,7 +12,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/naveedalirehmani/jenkins.git'
+        git branch: 'main', url: 'https://github.com/naveedalirehmani/jenkins-2.git'
       }
     }
 
