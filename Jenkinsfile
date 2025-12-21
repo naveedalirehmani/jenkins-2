@@ -3,10 +3,10 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_IMAGE = 'naveedalirehmani/hello-world'
+    DOCKER_IMAGE = 'naveedalirehmani/node-app-v2'
     APP_SERVER_IP = '65.2.131.223'
     SSH_USER = 'ubuntu'
-    CONTAINER_NAME = 'hello-world'
+    CONTAINER_NAME = 'node-app-v2'
   }
 
   stages {
@@ -18,7 +18,7 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh 'docker build -t $DOCKER_IMAGE .'
+        sh 'docker build --no-cache -t $DOCKER_IMAGE .'
       }
     }
     
@@ -40,7 +40,7 @@ pipeline {
             ssh -o StrictHostKeyChecking=no $SSH_USER@$APP_SERVER_IP "
               docker pull $DOCKER_IMAGE && \
               docker rm -f $CONTAINER_NAME || true && \
-              docker run -d --name $CONTAINER_NAME --publish 3000:3000 $DOCKER_IMAGE
+              docker run -d --name $CONTAINER_NAME --publish 8000:8000 $DOCKER_IMAGE
             "
           """
         }

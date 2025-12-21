@@ -19,7 +19,7 @@ RUN npm run build
 RUN npm prune --omit=dev
 
 # Expose port
-EXPOSE 3000
+EXPOSE 8000
 
 # Start the application
 CMD ["node", "dist/server.js"]
