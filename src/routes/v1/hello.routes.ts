@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import * as helloController from "../../controllers/helloController";
+import * as helloController from "../../controllers/hello.controller";
 
 import { API_ROUTES } from "../../types/routes";
 

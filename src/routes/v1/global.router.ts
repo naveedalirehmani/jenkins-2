@@ -1,4 +1,4 @@
-import helloRoutes from './helloRoutes';
+import helloRoutes from './hello.routes';
 
 import { Router } from 'express';
 import { API_ROUTES } from '../../types/routes';
