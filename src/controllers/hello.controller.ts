@@ -5,7 +5,7 @@ export function helloWorldHandler(request: Request, response: Response) {
   try {
     response.status(ResponseStatus.OK).json({
       message: ResponseMessages.Success,
-      data: { message: "Hello World 13" },
+      data: { message: "Hello World 14" },
     });
   } catch (error) {
     response
