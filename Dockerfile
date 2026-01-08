@@ -22,5 +22,5 @@ RUN npm prune --omit=dev
 EXPOSE 8000
 
 # Start the application
-CMD ["node", "dist/server.js"]
+CMD ["npm", "run", "start"]
     
