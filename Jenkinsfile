@@ -1,7 +1,8 @@
 // Jenkinsfile
+// agent { label 'docker-agent-2' }
 pipeline {
-  agent { label 'docker-agent-2' }
-
+  agent any
+  
   environment {
     DOCKER_IMAGE = 'naveedalirehmani/node-app-v2'
     APP_SERVER_IP = '65.2.131.223'
