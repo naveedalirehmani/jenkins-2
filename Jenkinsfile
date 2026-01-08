@@ -2,7 +2,7 @@
 // agent { label 'docker-agent-2' }
 pipeline {
   agent any
-  
+
   environment {
     DOCKER_IMAGE = 'naveedalirehmani/node-app-v2'
     APP_SERVER_IP = '65.2.131.223'
@@ -37,13 +37,15 @@ pipeline {
     stage('Deploy to App Server') {
       steps {
         sshagent(['ec2-ssh-key']) {
-          sh """
-            ssh -o StrictHostKeyChecking=no $SSH_USER@$APP_SERVER_IP "
-              docker pull $DOCKER_IMAGE && \
-              docker rm -f $CONTAINER_NAME || true && \
-              docker run -d --name $CONTAINER_NAME --publish 8000:8000 $DOCKER_IMAGE
-            "
-          """
+          withCredentials([string(credentialsId: 'node-env', variable: 'NODE_ENV')]) {
+            sh """
+              ssh -o StrictHostKeyChecking=no $SSH_USER@$APP_SERVER_IP "
+                docker pull $DOCKER_IMAGE && \
+                docker rm -f $CONTAINER_NAME || true && \
+                docker run -d --name $CONTAINER_NAME --publish 8000:8000 -e NODE_ENV=$NODE_ENV $DOCKER_IMAGE
+              "
+            """
+          }
         }
       }
     }
